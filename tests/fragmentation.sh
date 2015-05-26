@@ -6,11 +6,22 @@ source lib/pressure.sh
 SEQ=$1
 KERNEL=$2
 ANALYSIS=$3
-BENCH_TYPE=zram
+BENCH_TYPE=$4
 BUILD_THREADS=12
 
-MEM=512
 ZRAM_SIZE=512M
+
+if [ "$BENCH_TYPE" == "build" ]; then
+	MEM=512
+elif [ "$BENCH_TYPE" == "mixed" ]; then
+	MEM=640
+
+	# Total 200 MB
+	BATCH_REPEAT=5
+	BATCH_PAGES=10240
+else
+	exit;
+fi
 
 #### Start benchmark ####
 DIR=result-fragmentation-$BENCH_TYPE
@@ -29,6 +40,8 @@ wait_target
 
 get_report
 setup_swap_zram $ZRAM_SIZE
+
+setup_kernel_mem_pressure_background $BATCH_REPEAT $BATCH_PAGES
 
 get_report
 run_target_cmd "\"(cd /home/js1304/test-work/build-test/linux-3.0; make clean; make -j$BUILD_THREADS ) \"" 1

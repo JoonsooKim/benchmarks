@@ -3,6 +3,7 @@
 source lib/report.sh
 
 FRAGALLOC_DEBUGFS_DIR=/sys/kernel/debug/fragalloc-test
+FRAG_BACKGROUND_DEBUGFS_DIR=/sys/kernel/debug/fragmentation-test
 
 setup_swap_zram()
 {
@@ -31,6 +32,27 @@ setup_kernel_mem_pressure()
 	run_target_cmd "'sudo bash -c \"echo $FRAGALLOC_FREE_PERCENTAGE > $FRAGALLOC_DEBUGFS_DIR/free_percent\"'"
 	run_target_cmd "'sudo bash -c \"echo $FRAGALLOC_GFPFLAGS > $FRAGALLOC_DEBUGFS_DIR/gfp_flags\"'"
 	run_target_cmd "'sudo bash -c \"echo 1 > $FRAGALLOC_DEBUGFS_DIR/alloc\"'"
+}
+
+setup_kernel_mem_pressure_background()
+{
+	local FRAG_BACKGROUND_MSDELAY=10000
+	local FRAG_BACKGROUND_ORDER=0
+	local FRAG_BACKGROUND_REPEAT=$1
+	local FRAG_BACKGROUND_BATCH=$2
+	local FRAG_BACKGROUND_INTERVAL=2048
+
+	if [ "$FRAG_BACKGROUND_REPEAT" == "" ] || [ "$FRAG_BACKGROUND_REPEAT" == "0" ]; then
+		return;
+	fi
+
+	run_target_cmd "'sudo bash -c \"echo $FRAG_BACKGROUND_MSDELAY > $FRAG_BACKGROUND_DEBUGFS_DIR/msdelay\"'"
+	run_target_cmd "'sudo bash -c \"echo $FRAG_BACKGROUND_ORDER > $FRAG_BACKGROUND_DEBUGFS_DIR/order\"'"
+	run_target_cmd "'sudo bash -c \"echo $FRAG_BACKGROUND_REPEAT > $FRAG_BACKGROUND_DEBUGFS_DIR/batch_count\"'"
+	run_target_cmd "'sudo bash -c \"echo $FRAG_BACKGROUND_BATCH > $FRAG_BACKGROUND_DEBUGFS_DIR/batch_pages\"'"
+	run_target_cmd "'sudo bash -c \"echo $FRAG_BACKGROUND_INTERVAL > $FRAG_BACKGROUND_DEBUGFS_DIR/check_interval\"'"
+
+	run_target_cmd "'sleep 30; sudo bash -c \"echo 1 > $FRAG_BACKGROUND_DEBUGFS_DIR/runtest\"'" &
 }
 
 setup_anonymous_mem_pressure()
