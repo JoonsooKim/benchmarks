@@ -44,7 +44,7 @@ get_dmesg()
 
 get_hogger()
 {
-	run_target_cmd "ps aux" | grep memory-hogger | awk '$1 ~ /js1304/ { print $0 }' | wc -l | awk '{print $1}'
+	run_target_cmd "ps aux" | grep memory-hogger | awk -v GUEST_ID=$GUEST_ID '$1 ~ GUEST_ID { print $0 }' | wc -l | awk '{print $1}'
 }
 
 get_report()
@@ -58,7 +58,7 @@ get_report()
 
 	RESULT_SEQ=$(($RESULT_SEQ+1))
 
-	run_target_cmd "'sudo /home/js1304/bin/page-types -L -N'" | tail -n +2 > $OUTPUT_PAGE_TYPES
+	run_target_cmd "'sudo $BIN_PAGE_TYPES -L -N'" | tail -n +2 > $OUTPUT_PAGE_TYPES
 	run_target_cmd "cat /proc/vmstat" | tail -n +2 > $OUTPUT_VMSTAT
 	run_target_cmd "cat /proc/meminfo" | tail -n +2 > $OUTPUT_MEMINFO
 	run_target_cmd "cat /proc/pagetypeinfo" | tail -n +2 > $OUTPUT_PAGETYPEINFO

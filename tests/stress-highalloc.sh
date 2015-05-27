@@ -1,4 +1,5 @@
 #!/bin/bash
+source envs.sh
 source lib/target-system.sh
 source lib/report.sh
 
@@ -7,8 +8,6 @@ KERNEL=$2
 ANALYSIS=$3
 BENCH_TYPE=$4
 MEM=4096
-
-DIR_MMTESTS_BASE="/home/js1304/github/mmtests"
 
 run_mmtests()
 {

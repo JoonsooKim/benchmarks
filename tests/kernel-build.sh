@@ -50,8 +50,8 @@ setup_swap_zram $ZRAM_SIZE
 get_report
 
 get_report
-run_target_cmd "\"(cd /home/js1304/test-work/build-test/linux-3.0; make clean &> /dev/null; ) \"" 1
-run_target_cmd "\"(cd /home/js1304/test-work/build-test/linux-3.0; time make -j16 &> /dev/null; ) \"" &>> $RESULT_LOG
+run_target_cmd "\"(cd $DIR_KERNEL_BUILD_BASE; make clean &> /dev/null; ) \"" 1
+run_target_cmd "\"(cd $DIR_KERNEL_BUILD_BASE; time make -j16 &> /dev/null; ) \"" &>> $RESULT_LOG
 get_report
 
 shutdown_target

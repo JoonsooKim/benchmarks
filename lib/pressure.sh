@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source envs.sh
 source lib/report.sh
 
 FRAGALLOC_DEBUGFS_DIR=/sys/kernel/debug/fragalloc-test
@@ -68,17 +69,17 @@ setup_anonymous_mem_pressure()
 
 	for j in `seq 1 $SPREAD_HOGGER_PRESSURE`; do
 		local MEM_PRESSURE_DELAY=$(($j * 10))
-		run_target_cmd "'sleep $MEM_PRESSURE_DELAY; sudo bash -c \"/home/js1304/bin/memory-hogger 100\"'" 1 &
+		run_target_cmd "'sleep $MEM_PRESSURE_DELAY; sudo bash -c \"$BIN_MEM_HOGGER 100\"'" 1 &
 	done
 
-	run_target_cmd "\"(cd /home/js1304/test-work/build-test/linux-3.0; make clean; make -j4 ) \"" 1 &
+	run_target_cmd "\"(cd $DIR_KERNEL_BUILD_BASE; make clean; make -j4 ) \"" 1 &
 
 	run_target_cmd "'sleep 120; sudo bash -c \"killall make\"; sudo bash -c \"killall cc\"'"
 
 	local RUNNING_MEMORY_HOGGER=`get_hogger`
 	local RUNNING_MEMORY_HOGGER=$(($RUNNING_MEMORY_HOGGER + 1))
 	for j in `seq $RUNNING_MEMORY_HOGGER $HOGGER_PRESSURE`; do
-		run_target_cmd "'sleep 1; sudo bash -c \"/home/js1304/bin/memory-hogger 100\"'" 1 &
+		run_target_cmd "'sleep 1; sudo bash -c \"$BIN_MEM_HOGGER 100\"'" 1 &
 	done
 
 	if [ "$RUNNING_MEMORY_HOGGER" != "$HOGGER_PRESSURE" ]; then
@@ -97,7 +98,7 @@ setup_build_pressure()
 		return;
 	fi
 
-	run_target_cmd "\"(cd /home/js1304/test-work/build-test/linux-3.0; make clean; make -j$BACKGROUND_BUILD_THREADS ) \"" 1 &
+	run_target_cmd "\"(cd $DIR_KERNEL_BUILD_BASE; make clean; make -j$BACKGROUND_BUILD_THREADS ) \"" 1 &
 
 	sleep 30
 }

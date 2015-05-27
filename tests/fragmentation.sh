@@ -44,7 +44,7 @@ setup_swap_zram $ZRAM_SIZE
 setup_kernel_mem_pressure_background $BATCH_REPEAT $BATCH_PAGES
 
 get_report
-run_target_cmd "\"(cd /home/js1304/test-work/build-test/linux-3.0; make clean; make -j$BUILD_THREADS ) \"" 1
+run_target_cmd "\"(cd $DIR_KERNEL_BUILD_BASE; make clean; make -j$BUILD_THREADS ) \"" 1
 get_report
 get_dmesg
 

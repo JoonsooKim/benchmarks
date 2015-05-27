@@ -1,6 +1,8 @@
+#!/bin/bash
+source envs.sh
+
 SCRIPT_NAME=`basename $0`
 
-KERNEL=( bzImage-compaction-next-20150515-all )
 REPEAT=1
 ANALYSIS=0
 

@@ -1,9 +1,9 @@
 #!/bin/bash
 
+source envs.sh
 source lib/report.sh
 source lib/cma.sh
 
-KERNEL=( bzImage-compaction-next-20150515-all )
 MEM=512
 REPEAT=1
 ANALYSIS=0
