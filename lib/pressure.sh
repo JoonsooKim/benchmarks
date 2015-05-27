@@ -9,7 +9,7 @@ setup_swap_zram()
 {
 	local ZRAM_SIZE=$1
 
-	if [ "$ZRAM_SIZE" == "" ]; then
+	if [ "$ZRAM_SIZE" == "" ] || [ "$ZRAM_SIZE" == "0" ]; then
 		return;
 	fi
 	run_target_cmd "'sudo bash -c \"swapoff -a\"'"
