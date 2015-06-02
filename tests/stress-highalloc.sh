@@ -64,9 +64,9 @@ if [ "$TRACEPOINT_ON" == "1" ]; then
 	PARAM="trace_buf_size=4M trace_event=compaction:*"
 fi
 if [ "$PAGEOWNER_ON" == "1" ]; then
-	PARAM="page_owner=on " $PARAM
+	PARAM="page_owner=on "$PARAM
 fi
-PARAM="transparent_hugepage=never log_buf_len=32M " $PARAM
+PARAM="transparent_hugepage=never log_buf_len=32M "$PARAM
 
 setup_target "$KERNEL" "$MEM" "$PARAM"
 launch_target

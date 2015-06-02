@@ -97,7 +97,7 @@ if [ "$TRACEPOINT_ON" == "1" ]; then
 	MEM=$(($MEM+32))
 fi
 
-PARAM="cma_test_areas=$BENCH_TYPE " $PARAM
+PARAM="cma_test_areas=$BENCH_TYPE "$PARAM
 
 setup_target "$KERNEL" "$MEM" "$PARAM"
 launch_target

@@ -39,7 +39,7 @@ if [ "$TRACEPOINT_ON" == "1" ]; then
 	MEM=$(($MEM+32))
 fi
 if [ "$CMA" == "1" ]; then
-	PARAM="cma_test_areas=on " $PARAM
+	PARAM="cma_test_areas=on "$PARAM
 fi
 
 setup_target "$KERNEL" "$MEM" "$PARAM"
