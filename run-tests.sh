@@ -8,7 +8,7 @@ ANALYSIS=0
 
 usage()
 {
-	echo "Invalid usage: $SCRIPT_NAME -b [BENCH_NAME] -t [BENCH_TYPE] -r [REPEAT] -a [1:trace 2:page-owner 3:all] -o [OPTION]";
+	echo "Invalid usage: $SCRIPT_NAME -b [BENCH_NAME] -t [BENCH_TYPE] -r [REPEAT] -a [1:trace 2:page-owner 3:all] -o [OPTION] -k [KERNEL]";
 	exit;
 }
 
@@ -29,7 +29,7 @@ check_argument()
 ##### Main #####
 ################
 
-ARGS=`getopt -o b:t:r:a:o: -- "$@"`
+ARGS=`getopt -o b:t:r:a:o:k: -- "$@"`
 while true; do
 	case "$1" in
 		-b) BENCH_NAME=$2; shift 2;;
@@ -37,6 +37,7 @@ while true; do
 		-r) REPEAT=$2; shift 2;;
 		-a) ANALYSIS=$2; shift 2;;
 		-o) OPTIONS=$OPTIONS""$2" "; shift 2;;
+		-k) KERNEL=( "$2" ); shift 2;;
 		*) break;;
 	esac
 done

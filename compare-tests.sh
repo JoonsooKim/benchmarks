@@ -34,18 +34,19 @@ compare_cma()
 	done
 }
 
-ARGS=`getopt -o d:b:r: -- "$@"`
+ARGS=`getopt -o d:b:r:k: -- "$@"`
 while true; do
 	case "$1" in
 		-r) REPEAT=$2; shift 2;;
 		-d) DIR=$2; shift 2;;
 		-b) BENCH_NAME=$2; shift 2;;
+		-k) KERNEL=( "$2" ); shift 2;;
 		*) break;;
 	esac
 done
 
 if [ "$DIR" == "" ]; then
-	echo "Usage: $0 -d [DIRECTORY] -r [REPEAT]"
+	echo "Usage: $0 -d [DIRECTORY] -r [REPEAT] -b [BENCH)NAME] -k [KERNEL]"
 	exit;
 fi
 
