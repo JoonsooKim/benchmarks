@@ -126,6 +126,7 @@ if [ "$TRACEPOINT_ON" == "1" ]; then
 	PARAM="trace_buf_size=4M trace_event=compaction:*"
 	MEM=$(($MEM+32))
 fi
+PARAM="transparent_hugepage=never "$PARAM
 
 setup_target "$KERNEL" "$MEM" "$PARAM"
 launch_target
