@@ -3,6 +3,7 @@
 source envs.sh
 source lib/report.sh
 source lib/cma.sh
+source lib/compaction.sh
 
 MEM=512
 REPEAT=1
@@ -59,6 +60,9 @@ for kernel in ${KERNEL[@]}; do
 
 	compare_basic
 	compare_cma
+	get_compaction_normalized_success
 
 	echo ""
 done;
+
+draw_compaction_graph;
