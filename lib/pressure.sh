@@ -72,9 +72,10 @@ setup_anonymous_mem_pressure()
 		run_target_cmd "'sleep $MEM_PRESSURE_DELAY; sudo bash -c \"$BIN_MEM_HOGGER 100\"'" 1 &
 	done
 
-	run_target_cmd "\"(cd $DIR_KERNEL_BUILD_BASE; make clean; make -j4 ) \"" 1 &
-
-	run_target_cmd "'sleep 120; sudo bash -c \"killall make\"; sudo bash -c \"killall cc\"'"
+	if [ "$SPREAD_HOGGER_PRESSURE" != "0" ]; then
+		run_target_cmd "\"(cd $DIR_KERNEL_BUILD_BASE; make clean; make -j4 ) \"" 1 &
+		run_target_cmd "'sleep 120; sudo bash -c \"killall make\"; sudo bash -c \"killall cc\"'"
+	fi
 
 	local RUNNING_MEMORY_HOGGER=`get_hogger`
 	local RUNNING_MEMORY_HOGGER=$(($RUNNING_MEMORY_HOGGER + 1))

@@ -66,7 +66,7 @@ elif [ "$BENCH_TYPE" == "mixed-frag-unmovable" ]; then
 
 elif [ "$BENCH_TYPE" == "hogger-frag-movable" ]; then
 	HOGGER_PRESSURE=2
-	SPREAD_HOGGER_PRESSURE=2
+	SPREAD_HOGGER_PRESSURE=0
 
 	FRAGALLOC_FREE_PERCENTAGE=75
 	FRAGALLOC_GFPFLAGS=$GFP_HIGHUSER_MOVABLE
@@ -79,7 +79,7 @@ elif [ "$BENCH_TYPE" == "hogger-frag-movable" ]; then
 
 elif [ "$BENCH_TYPE" == "hogger-frag-unmovable" ]; then
 	HOGGER_PRESSURE=2
-	SPREAD_HOGGER_PRESSURE=2
+	SPREAD_HOGGER_PRESSURE=0
 
 	FRAGALLOC_FREE_PERCENTAGE=75
 	FRAGALLOC_GFPFLAGS=$GFP_HIGHUSER
