@@ -12,6 +12,10 @@ get_compaction_normalized_success()
 		setup_report $kernel $MEM $trial $DIR $ANALYSIS
 		POSSIBILITY=`frag-analyzer.sh -t page_types -f $RESULT_PAGE_TYPES".1" -s | grep Compaction | awk '{print $5}'`
 		SUCCESS_ALLOCS=`cat $RESULT_LOG | grep "Success allocs:" | awk '{print $3}'`
+		if [ $POSSIBILITY == "0" ]; then
+			POSSIBILITY=0;
+			SUCCESS_ALLOCS=0;
+		fi
 
 		TOTAL_POSSIBILITY=$(($TOTAL_POSSIBILITY+$POSSIBILITY))
 		TOTAL_SUCCESS_ALLOCS=$(($TOTAL_SUCCESS_ALLOCS+$SUCCESS_ALLOCS))
