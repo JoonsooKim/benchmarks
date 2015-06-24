@@ -69,7 +69,7 @@ setup_anonymous_mem_pressure()
 
 	for j in `seq 1 $SPREAD_HOGGER_PRESSURE`; do
 		local MEM_PRESSURE_DELAY=$(($j * 10))
-		run_target_cmd "'sleep $MEM_PRESSURE_DELAY; sudo bash -c \"$BIN_MEM_HOGGER 100\"'" 1 &
+		run_target_cmd "'sleep $MEM_PRESSURE_DELAY; sudo bash -c \"$BIN_MEM_HOGGER 50\"'" 1 &
 	done
 
 	if [ "$SPREAD_HOGGER_PRESSURE" != "0" ]; then
@@ -80,7 +80,7 @@ setup_anonymous_mem_pressure()
 	local RUNNING_MEMORY_HOGGER=`get_hogger`
 	local RUNNING_MEMORY_HOGGER=$(($RUNNING_MEMORY_HOGGER + 1))
 	for j in `seq $RUNNING_MEMORY_HOGGER $HOGGER_PRESSURE`; do
-		run_target_cmd "'sleep 1; sudo bash -c \"$BIN_MEM_HOGGER 100\"'" 1 &
+		run_target_cmd "'sleep 1; sudo bash -c \"$BIN_MEM_HOGGER 50\"'" 1 &
 	done
 
 	if [ "$RUNNING_MEMORY_HOGGER" != "$HOGGER_PRESSURE" ]; then
