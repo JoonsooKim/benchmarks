@@ -22,7 +22,7 @@ get_value()
 	OPTION=`get_option "$OPTIONS" "$KEYWORD"`
 	echo $OPTION | awk '
 		{
-			match ($0, /-[[:alnum:]]+$/)
+			match ($0, /=[[:alnum:]]+$/)
 			if (RSTART) {
 				value = substr($0, RSTART+1, RLENGTH-1);
 				print value
