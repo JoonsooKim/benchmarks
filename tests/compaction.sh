@@ -3,6 +3,7 @@ source lib/target-system.sh
 source lib/report.sh
 source lib/pressure.sh
 source lib/highalloc.sh
+source lib/cma.sh
 
 SEQ=$1
 KERNEL=$2
@@ -127,6 +128,15 @@ if [ "$TRACEPOINT_ON" == "1" ]; then
 	MEM=$(($MEM+32))
 fi
 PARAM="transparent_hugepage=never "$PARAM
+
+if [ "$OPTIONS" != "" ]; then
+	WITH_CMA=`get_value "$OPTIONS" WITH_CMA`
+fi
+
+if [ "$WITH_CMA" != "" ]; then
+	setup_cma $CMA_AREA
+	PARAM="cma_test_areas=compaction_benchmark "$PARAM
+fi
 
 setup_target "$KERNEL" "$MEM" "$PARAM"
 launch_target
