@@ -15,7 +15,7 @@ compare_basic()
 		setup_report $kernel $MEM $trial $DIR $ANALYSIS
 		compare_report
 	done |
-	awk -v seq=$REPEAT '{ val = strtonum($2); arr[$1] += val; arr2[$1] += (val * val); } END {for (idx in arr) {x2 = arr2[idx]/strtonum(seq); avg = arr[idx]/strtonum(seq); std=sqrt(x2-(avg*avg)); printf("%-30s %d %0.2f\n", idx, avg, std)}}' | sort
+	awk -v seq=$REPEAT '{ val = strtonum($2); arr[$1] += val; arr2[$1] += (val * val); } END {for (idx in arr) {x2 = arr2[idx]/strtonum(seq); avg = arr[idx]/strtonum(seq); std=sqrt(x2-(avg*avg)); printf("%-30s\t%20d\t%10.2f\n", idx, avg, std)}}' | sort
 }
 
 compare_cma()
@@ -27,7 +27,7 @@ compare_cma()
 	for trial in `seq 1 $REPEAT`; do
 		setup_report $kernel $MEM $trial $DIR $ANALYSIS
 		get_failed_cmaalloc $RESULT_LOG
-	done | wc -l | awk '{ printf("%-30s %d\n", "CMA_fail", $1); }'
+	done | wc -l | awk '{ printf("%-30s\t%20d\n", "CMA_fail", $1); }'
 
 	for trial in `seq 1 $REPEAT`; do
 		setup_report $kernel $MEM $trial $DIR $ANALYSIS

@@ -22,7 +22,7 @@ get_compaction_normalized_success()
 	done
 
 	PERCENTAGE=$(($TOTAL_SUCCESS_ALLOCS*100/$TOTAL_POSSIBILITY))
-	echo $PERCENTAGE | awk '{printf("%-30s %d\n", "Success(N):", $1)}'
+	echo $PERCENTAGE | awk '{printf("%-30s\t%20d\n", "Success(N):", $1)}'
 }
 
 extract_compaction_graphdata()
