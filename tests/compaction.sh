@@ -127,6 +127,9 @@ if [ "$TRACEPOINT_ON" == "1" ]; then
 	PARAM="trace_buf_size=4M trace_event=compaction:*"
 	MEM=$(($MEM+32))
 fi
+if [ "$PAGEOWNER_ON" == "1" ]; then
+	PARAM="page_owner=on "$PARAM
+fi
 PARAM="transparent_hugepage=never "$PARAM
 
 if [ "$OPTIONS" != "" ]; then
