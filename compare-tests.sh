@@ -15,7 +15,7 @@ compare_basic()
 		setup_report $kernel $MEM $trial $DIR $ANALYSIS
 		compare_report
 	done |
-	awk -v seq=$REPEAT '{ arr[$1] += strtonum($2); } END {for (idx in arr) {printf("%-30s %d\n", idx, arr[idx]/strtonum(seq))}}' | sort
+	awk -v seq=$REPEAT '{ val = strtonum($2); arr[$1] += val; arr2[$1] += (val * val); } END {for (idx in arr) {x2 = arr2[idx]/strtonum(seq); avg = arr[idx]/strtonum(seq); std=sqrt(x2-(avg*avg)); printf("%-30s %d %0.2f\n", idx, avg, std)}}' | sort
 }
 
 compare_cma()
