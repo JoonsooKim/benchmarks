@@ -83,5 +83,6 @@ compare_report()
 	cat $RESULT_MEMINFO".2" $RESULT_MEMINFO".3" | \
 		awk '{ if ($1 in arr) { print $1 " " strtonum($2) - strtonum(arr[$1]) }; arr[$1] = $2; }' | \
 		grep -e Mem -e Swap -e Active -e Inactive
-	cat $RESULT_PAGETYPEINFO".2" | grep "Node 0, zone" | grep "DMA32" | awk '{print "pb:unmovable: " $5; print "pb:reclaimable: " $6; print "pb:movable: " $7}'
+	cat $RESULT_PAGETYPEINFO".3" | grep "Node 0, zone" | grep "DMA32" | awk '{ if ("u" in arr) { print "pb:DMA32:unmovable: " arr["u"] - strtonum($5); print "pb:DMA32:reclaimable: " arr["r"] - strtonum($6); print "pb:DMA32:movable: " arr["m"] - strtonum($7) } else { arr["u"] = strtonum($5); arr["r"] = strtonum($6); arr["m"] = strtonum($7); } }'
+	cat $RESULT_PAGETYPEINFO".3" | grep "Node 0, zone" | grep "Normal" | awk '{ if ("u" in arr) { print "pb:Normal:unmovable: " arr["u"] - strtonum($5); print "pb:Normal:reclaimable: " arr["r"] - strtonum($6); print "pb:Normal:movable: " arr["m"] - strtonum($7) } else { arr["u"] = strtonum($5); arr["r"] = strtonum($6); arr["m"] = strtonum($7); } }'
 }
