@@ -137,7 +137,7 @@ run_highalloc_repeat()
 
 		get_report
 		run_highalloc
-		get_report
+		get_report 1
 	done
 
 }

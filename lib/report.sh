@@ -56,12 +56,17 @@ get_report()
 	local OUTPUT_PAGETYPEINFO=$RESULT_PAGETYPEINFO.$RESULT_SEQ
 	local OUTPUT_TRACEPOINT=$RESULT_TRACEPOINT.$RESULT_SEQ
 	local OUTPUT_LOG=$RESULT_LOG
+	local DROP_CACHE=$1
 
 	RESULT_SEQ=$(($RESULT_SEQ+1))
 
 	run_target_cmd "'sudo $BIN_PAGE_TYPES -L -N'" | tail -n +2 > $OUTPUT_PAGE_TYPES
 	run_target_cmd "cat /proc/vmstat" | tail -n +2 > $OUTPUT_VMSTAT
 	run_target_cmd "cat /proc/meminfo" | tail -n +2 > $OUTPUT_MEMINFO
+	if [ "$DROP_CACHE" == "1" ]; then
+		run_target_cmd "'sudo bash -c \"echo 3 > /proc/sys/vm/drop_caches\"'"
+		run_target_cmd "'sudo bash -c \"echo 3 > /proc/sys/vm/drop_caches\"'"
+	fi
 	run_target_cmd "cat /proc/pagetypeinfo" | tail -n +2 > $OUTPUT_PAGETYPEINFO
 
 	local RUNNING_MEMORY_HOGGER=`get_hogger`

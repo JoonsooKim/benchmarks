@@ -31,7 +31,7 @@ run_mmtests_basic()
 {
 	get_report
 	run_mmtests $SEQ
-	get_report
+	get_report 1
 	get_mmtests_output $SEQ
 }
 
@@ -45,7 +45,7 @@ run_mmtests_repeat()
 
 		get_report
 		run_mmtests $TEST_SEQ
-		get_report
+		get_report 1
 		get_mmtests_output $TEST_SEQ
 	done
 
