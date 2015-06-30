@@ -12,6 +12,7 @@ BENCH_TYPE=$4
 
 MEM=512
 HIGHALLOC_ORDER=3
+REPEAT_HIGHALLOC=1
 
 GFP_HIGHUSER=0x200d2
 GFP_HIGHUSER_MOVABLE=0x200da
@@ -111,12 +112,35 @@ elif [ "$BENCH_TYPE" == "build-frag-unmovable" ]; then
 
 	ZRAM_SIZE=32M
 
+elif [ "$BENCH_TYPE" == "build-frag-fragmentation" ]; then
+	FRAGALLOC_FREE_PERCENTAGE=75
+	FRAGALLOC_GFPFLAGS=$GFP_HIGHUSER_MOVABLE
+
+	BACKGROUND_BUILD_THREADS=8
+
+	HIGHALLOC_PERCENTAGE=20
+
+	ZRAM_SIZE=32M
+	HIGHALLOC_GFPFLAGS=$GFP_HIGHUSER_MOVABLE
+	REPEAT_HIGHALLOC=5
+
 else
 	exit;
 fi
 
+run_highalloc_repeat()
+{
+	local i
 
+	for i in `seq 1 $REPEAT_HIGHALLOC`; do
+		setup_build_pressure $BACKGROUND_BUILD_THREADS
 
+		get_report
+		run_highalloc
+		get_report
+	done
+
+}
 
 #### Start benchmark ####
 DIR=result-compaction-$BENCH_TYPE
@@ -152,10 +176,6 @@ setup_kernel_mem_pressure $FRAGALLOC_FREE_PERCENTAGE $FRAGALLOC_GFPFLAGS
 setup_anonymous_mem_pressure $HOGGER_PRESSURE $SPREAD_HOGGER_PRESSURE
 get_report
 
-setup_build_pressure $BACKGROUND_BUILD_THREADS
-
-get_report
-run_highalloc
-get_report
+run_highalloc_repeat
 
 shutdown_target
