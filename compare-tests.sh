@@ -84,6 +84,10 @@ if [ "$BENCH_NAME" == "stress-highalloc-pageblock.sh" ]; then
 	REPEAT_HIGHALLOC=3
 fi
 
+if [ "$BENCH_NAME" == "fragmentation-mixed.sh" ]; then
+	MEM=640
+fi
+
 if [ "$BENCH_NAME" == "cma.sh" ]; then
 	MEM=1024
 fi
