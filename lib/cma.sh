@@ -9,30 +9,25 @@ setup_cma()
 
 get_success_cmaalloc()
 {
-	local NR_SUCCESS=`run_target_cmd "dmesg | grep cma" | grep returned | grep -v null | wc -l | awk '{ print $1 }'`
-
-	echo "$NR_SUCCESS"
-}
-
-get_failed_cmaalloc()
-{
-	local NR_FAILED=`cat $RESULT_LOG | grep cma | grep returned | grep null | wc -l | awk '{ print $1 }'`
-
-	echo "$NR_FAILED"
+	run_target_cmd "sudo cat $CMA_DEBUGFS_DIR/used" | grep -v "Do" | awk '{ print $1 }'
 }
 
 alloc_cma()
 {
-	local NR_PAGES=$1
+	local NR_ALLOCS=$1
+	local SEQS=`seq -s " " 1 $NR_ALLOCS`
+	local NR_PAGES=$2
 
-	run_target_cmd "'sudo bash -c \"echo $NR_PAGES > $CMA_DEBUGFS_DIR/alloc\"'"
+	run_target_cmd "'sudo bash -c \"for i in $SEQS; do echo $NR_PAGES > $CMA_DEBUGFS_DIR/alloc; sleep 1; done;\"'"
 }
 
 free_cma()
 {
-	local NR_PAGES=$1
+	local NR_ALLOCS=$1
+	local SEQS=`seq -s " " 1 $NR_ALLOCS`
+	local NR_PAGES=$2
 
-	run_target_cmd "'sudo bash -c \"echo $NR_PAGES > $CMA_DEBUGFS_DIR/free\"'"
+	run_target_cmd "'sudo bash -c \"for i in $SEQS; do echo $NR_PAGES > $CMA_DEBUGFS_DIR/free; done;\"'"
 }
 
 get_cma_latency()
