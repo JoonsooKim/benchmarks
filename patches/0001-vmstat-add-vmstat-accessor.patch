@@ -1,0 +1,62 @@
+From 80e7c421d2be2fe8f5bb30106d0ca54c7821885a Mon Sep 17 00:00:00 2001
+From: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Date: Thu, 4 Jun 2015 22:00:08 +0900
+Subject: [PATCH 1/4] vmstat: add vmstat accessor
+
+Signed-off-by: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+---
+ include/linux/vmstat.h |  1 +
+ mm/vmstat.c            | 25 +++++++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
+
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index 82e7db7..005e64c 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -73,6 +73,7 @@ static inline void __count_vm_events(enum vm_event_item item, long delta)
+ static inline void all_vm_events(unsigned long *ret)
+ {
+ }
++
+ static inline void vm_events_fold_cpu(int cpu)
+ {
+ }
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index 1fd0886..781b141 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -62,6 +62,31 @@ void all_vm_events(unsigned long *ret)
+ }
+ EXPORT_SYMBOL_GPL(all_vm_events);
+ 
++static unsigned long sum_vm_event(int i)
++{
++	int cpu;
++	unsigned long sum = 0;
++
++	for_each_online_cpu(cpu) {
++		struct vm_event_state *this = &per_cpu(vm_event_states, cpu);
++
++		sum += this->event[i];
++	}
++
++	return sum;
++}
++
++unsigned long vm_event(int i)
++{
++	unsigned long sum;
++
++	get_online_cpus();
++	sum = sum_vm_event(i);
++	put_online_cpus();
++
++	return sum;
++}
++
+ /*
+  * Fold the foreign cpu events into our own.
+  *
+-- 
+1.9.1
+
